@@ -3,6 +3,7 @@ import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { type Session } from "next-auth";
 import KwackerForm from "~/components/home/KwackerForm";
+import KwackerPosts from "~/components/home/KwackerPosts";
 
 const Home: NextPage = () => {
   return (
@@ -12,8 +13,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Created by Pacio with passion" />
         <link rel="icon" href="/duck.png" />
       </Head>
-      <main className="mx-auto max-w-7xl px-5">
+      <main className="mx-auto max-w-7xl">
         <KwackerForm />
+        <KwackerPosts />
       </main>
     </>
   );

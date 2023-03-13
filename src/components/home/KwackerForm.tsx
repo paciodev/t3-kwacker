@@ -6,10 +6,12 @@ let toastId: string;
 
 const KwackerForm = () => {
   const [text, setText] = useState("");
+  const utils = api.useContext();
 
   const addPost = api.post.add.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       setText("");
+      await utils.post.getAll.invalidate();
       return toast.success("We just kwacked your post!", { id: toastId });
     },
     onError: (err) => {
@@ -29,7 +31,7 @@ const KwackerForm = () => {
 
   return (
     <form
-      className="mt-12 rounded-xl bg-gray-200 px-5 py-8 sm:p-12"
+      className="mx-5 mt-12 rounded-xl bg-gray-200 px-5 py-8 sm:p-12"
       onSubmit={(e) => void handleSubmit(e)}
     >
       <div className="flex items-center rounded-md bg-white px-6">
