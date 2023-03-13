@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Navbar from "~/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import Footer from "~/components/Footer";
 
 const font = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <div className={font.className}>
         <Navbar />
         <Component {...pageProps} />
+        <Footer />
       </div>
     </SessionProvider>
   );

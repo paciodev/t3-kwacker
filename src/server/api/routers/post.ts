@@ -16,7 +16,7 @@ export const postRouter = createTRPCRouter({
 	// 		};
 	// 	}),
 
-	getAll: publicProcedure.query(({ ctx, input }) => {
+	getAll: publicProcedure.query(({ ctx }) => {
 		return ctx.prisma.post.findMany({
 			where: {
 				published: true

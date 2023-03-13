@@ -3,7 +3,6 @@ import HomePost from "./HomePost";
 
 const KwackerPosts = () => {
   const { data, error } = api.post.getAll.useQuery();
-  console.log(data);
 
   if (error) {
     return <h1>{error.message}</h1>;
@@ -12,7 +11,7 @@ const KwackerPosts = () => {
   return (
     <div className="mt-12 border-t-4 px-5 pt-12">
       {data ? (
-        <div>
+        <div className="space-y-5">
           {data.map((p) => (
             <HomePost key={p.id} post={p} />
           ))}
