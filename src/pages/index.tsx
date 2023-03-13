@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Created by Pacio with passion" />
         <link rel="icon" href="/duck.png" />
       </Head>
-      <main className="mx-auto max-w-7xl">
+      <main className="mx-auto max-w-7xl px-5">
         <KwackerForm />
       </main>
     </>
