@@ -1,5 +1,9 @@
-import { type NextPage } from "next";
+import { type GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
+import { type Session } from "next-auth";
+import KwackerForm from "~/components/home/KwackerForm";
+
 const Home: NextPage = () => {
   return (
     <>
@@ -8,9 +12,23 @@ const Home: NextPage = () => {
         <meta name="description" content="Created by Pacio with passion" />
         <link rel="icon" href="/duck.png" />
       </Head>
-      <main>Welcome in kwacker app 🦆</main>
+      <main className="mx-auto max-w-7xl">
+        <KwackerForm />
+      </main>
     </>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null;
+}> = async (ctx) => {
+  const session = await getSession(ctx);
+
+  return {
+    props: {
+      session,
+    },
+  };
+};
