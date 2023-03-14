@@ -36,6 +36,54 @@ export const postRouter = createTRPCRouter({
 		})
 	}),
 
+	getById: publicProcedure
+		.input(z.object({
+			id: z.string()
+		}))
+		.query(async ({ ctx, input }) => {
+			if (!input.id) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Please provide id of post'
+				})
+			}
+
+			const post = await ctx.prisma.post.findUnique({
+				where: {
+					id: input.id
+				},
+				include: {
+					author: {
+						select: {
+							admin: true,
+							image: true,
+							name: true
+						}
+					},
+					comments: {
+						include: {
+							author: {
+								select: {
+									admin: true,
+									image: true,
+									name: true
+								}
+							}
+						}
+					}
+				},
+			})
+
+			if (!post || !post.published) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Please provide valid id'
+				})
+			}
+
+			return post
+		}),
+
 	add: protectedProcedure.input(z.object({ text: z.string() })).mutation(async ({ ctx, input }) => {
 		const text = input.text.trim()
 

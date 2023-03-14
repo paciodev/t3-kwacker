@@ -6,7 +6,7 @@ const Navbar = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="border-b-4 py-6">
+    <div className="mb-8 border-b-4 py-6">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5">
         <Link href="/" className="flex items-center space-x-3 py-2">
           <Image src="/duck.png" alt="duck logo" width={50} height={50} />
