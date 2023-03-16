@@ -1,15 +1,23 @@
+import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
+import Loading from "../Loading";
 import HomePost from "./HomePost";
 
 const KwackerPosts = () => {
   const { data, error } = api.post.getAll.useQuery();
 
   if (error) {
-    return <h1>{error.message}</h1>;
+    toast.error(`Kwack! ${error.message}`);
+    return (
+      <>
+        <h1>{error.message}</h1>
+        <p>Please try again later.</p>
+      </>
+    );
   }
 
   return (
-    <div className="mt-12 border-t-4 px-5 pt-12">
+    <div className="mx-auto mt-12 max-w-7xl px-5">
       {data ? (
         <div className="space-y-5">
           {data.map((p) => (
@@ -17,7 +25,7 @@ const KwackerPosts = () => {
           ))}
         </div>
       ) : (
-        <h1>Loading...</h1>
+        <Loading />
       )}
     </div>
   );
