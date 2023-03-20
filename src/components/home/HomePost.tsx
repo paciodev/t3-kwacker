@@ -40,8 +40,13 @@ const HomePost = ({ post }: Props) => {
           href={`/@${post.author.name || ""}`}
           className="flex items-center"
         >
-          <div className="mr-[3px] font-bold hover:underline">
+          <div className="mr-[3px] flex items-center font-bold hover:underline">
             {post.author.name}
+            {post.author.admin && (
+              <span className="ml-1">
+                <Image src="/crown.svg" alt="admin" width={14} height={14} />
+              </span>
+            )}
           </div>
           <div className="mr-[3px]">•</div>
           <Timeago date={post.createdAt} />

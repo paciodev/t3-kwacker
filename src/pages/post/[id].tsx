@@ -24,8 +24,11 @@ const PostPage = () => {
         ) : post ? (
           <>
             <Post post={post} />
+            <p className="mt-3 text-center uppercase tracking-[0.5em]">
+              Comments
+            </p>
             <CommentForm id={post.id} />
-            <div>
+            <div className="mt-6 space-y-6">
               {post.comments.map((c) => (
                 <Comment key={c.id} comment={c} />
               ))}

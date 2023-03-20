@@ -37,7 +37,7 @@ const CommentForm = ({ id }: { id: string }) => {
 
   return (
     <form
-      className="mt-6 rounded-xl bg-gray-200 p-5"
+      className="mt-3 rounded-xl bg-gray-200 p-5"
       onSubmit={(e) => void handleSubmit(e)}
     >
       <div className="flex items-center rounded-md bg-white px-6 ">

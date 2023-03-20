@@ -9,7 +9,7 @@ import { commentRouter } from "~/server/api/routers/comment";
  */
 export const appRouter = createTRPCRouter({
 	post: postRouter,
-	comment: commentRouter
+	comment: commentRouter,
 });
 
 // export type definition of API
