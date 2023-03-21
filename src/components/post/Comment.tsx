@@ -25,17 +25,19 @@ const Comment = ({
         />
       </div>
       <div className="flex-1">
-        <Link
-          href={`/@${c.author?.name as string}`}
-          className="flex items-center font-bold hover:underline"
-        >
-          {c.author?.name}
-          {c.author?.admin && (
-            <span className="ml-1">
-              <Image src="/crown.svg" alt="admin" width={12} height={12} />
-            </span>
-          )}
-        </Link>
+        <div className="flex">
+          <Link
+            href={`/user/${c?.authorId as string}`}
+            className="flex items-center font-bold hover:underline"
+          >
+            {c.author?.name}
+            {c.author?.admin && (
+              <span className="ml-1">
+                <Image src="/crown.svg" alt="admin" width={12} height={12} />
+              </span>
+            )}
+          </Link>
+        </div>
         <p>{c.message}</p>
       </div>
     </div>

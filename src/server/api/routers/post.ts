@@ -75,7 +75,6 @@ export const postRouter = createTRPCRouter({
 
 			return post
 		}),
-
 	add: protectedProcedure.input(z.object({ text: z.string() })).mutation(async ({ ctx, input }) => {
 		const text = input.text.trim()
 

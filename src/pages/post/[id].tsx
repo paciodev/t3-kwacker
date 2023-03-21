@@ -9,7 +9,11 @@ import Post from "../../components/post/Post";
 
 const PostPage = () => {
   const router = useRouter();
-  const { data: post, isLoading } = api.post.getById.useQuery({
+  const {
+    data: post,
+    isLoading,
+    error,
+  } = api.post.getById.useQuery({
     id: router.query.id as string,
   });
 
@@ -19,9 +23,9 @@ const PostPage = () => {
         <title>Kwacker - Post from {post?.author.name}</title>
       </Head>
       <div className="mx-auto max-w-7xl px-5">
-        {isLoading ? (
-          <Loading />
-        ) : post ? (
+        {error && <NotFound />}
+        {isLoading && !error && <Loading />}
+        {post && (
           <>
             <Post post={post} />
             <p className="mt-3 text-center uppercase tracking-[0.5em]">
@@ -34,8 +38,6 @@ const PostPage = () => {
               ))}
             </div>
           </>
-        ) : (
-          <NotFound />
         )}
       </div>
     </>

@@ -23,7 +23,7 @@ type Props = {
 const Post = ({ post }: Props) => {
   return (
     <div className="flex cursor-pointer space-x-5 rounded-xl bg-gray-200 p-5">
-      <Link href={`/@${post?.author.name as string}`}>
+      <Link href={`/user/${post?.authorId}`}>
         <Image
           src={post?.author.image as string}
           alt={`PFP of ${post?.author.name as string}`}
@@ -33,10 +33,7 @@ const Post = ({ post }: Props) => {
         />
       </Link>
       <div>
-        <Link
-          href={`/@${post?.author.name as string}`}
-          className="flex items-center"
-        >
+        <Link href={`/user/${post?.authorId}`} className="flex items-center">
           <div className="mr-[3px] flex items-center font-bold hover:underline">
             {post.author.name}
             {post.author.admin && (

@@ -2,6 +2,7 @@ import { type Post } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { type SyntheticEvent, useRef } from "react";
 import Timeago from "react-timeago";
 
 type Props = {
@@ -16,17 +17,21 @@ type Props = {
 
 const HomePost = ({ post }: Props) => {
   const router = useRouter();
+  const innerLinkRef = useRef(null);
 
-  const handleRedirect = async () => {
-    await router.push(`/post/${post.id}`);
+  const handleRedirect = async (e: SyntheticEvent) => {
+    console.log(e);
+    if (e.target !== innerLinkRef.current) {
+      await router.push(`/post/${post.id}`);
+    }
   };
 
   return (
     <div
       className="flex cursor-pointer space-x-5 rounded-xl bg-gray-200 p-5 transition-opacity hover:opacity-75"
-      onClick={() => void handleRedirect()}
+      onClick={(e) => void handleRedirect(e)}
     >
-      <Link href={`/@${post.author.name || ""}`}>
+      <Link href={`/user/${post?.authorId}`}>
         <Image
           src={post.author.image || ""}
           alt={`PFP of ${post.author.name || ""}`}
@@ -36,11 +41,11 @@ const HomePost = ({ post }: Props) => {
         />
       </Link>
       <div>
-        <Link
-          href={`/@${post.author.name || ""}`}
-          className="flex items-center"
-        >
-          <div className="mr-[3px] flex items-center font-bold hover:underline">
+        <Link href={`/user/${post?.authorId}`} className="flex items-center">
+          <div
+            className="mr-[3px] flex items-center font-bold hover:underline"
+            ref={innerLinkRef}
+          >
             {post.author.name}
             {post.author.admin && (
               <span className="ml-1">
