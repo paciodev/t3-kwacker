@@ -21,7 +21,7 @@ const Navbar = () => {
             {session ? "Sign out" : "Sign in"}
           </button>
           {session?.user && (
-            <Link href={`/@${session.user.name || ""}`}>
+            <Link href={`/user/${session.user.id || ""}`}>
               <Image
                 src={session?.user.image || "/avatar.webp"}
                 className="ml-6 rounded-xl shadow transition-all hover:rounded-2xl"

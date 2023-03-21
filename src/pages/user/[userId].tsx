@@ -16,7 +16,12 @@ const UserPage = () => {
     <div>
       {error && <NotFound />}
       {isLoading && !error && <Loading />}
-      {data && JSON.stringify(data)}
+      {data && (
+        <>
+          <h1>TA PODSTRONA DO ZROBIENIA</h1>
+          <p>{JSON.stringify(data)}</p>
+        </>
+      )}
     </div>
   );
 };
