@@ -26,9 +26,9 @@ type Props = {
 
 const Post = ({ post, redirect, stopUserRedirect }: Props) => {
   const router = useRouter();
-  const usernameRef = useRef(null);
-  const crownRef = useRef(null);
-  const photoRef = useRef(null);
+  const usernameRef = useRef<HTMLSpanElement>(null);
+  const crownRef = useRef<HTMLImageElement>(null);
+  const photoRef = useRef<HTMLImageElement>(null);
 
   const refs = [photoRef.current, crownRef.current, usernameRef.current];
 
@@ -36,7 +36,10 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
     if (!redirect) {
       return;
     }
-    if (stopUserRedirect || !refs.includes(e.target)) {
+    if (
+      stopUserRedirect ||
+      !refs.includes(e.target as HTMLSpanElement | HTMLImageElement)
+    ) {
       await router.push(`/post/${post.id}`);
     }
   };
