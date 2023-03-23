@@ -17,7 +17,18 @@ export const userRouter = createTRPCRouter({
 					id: true,
 					image: true,
 					name: true,
-					posts: true
+					joinedAt: true,
+					posts: {
+						include: {
+							author: {
+								select: {
+									admin: true,
+									image: true,
+									name: true
+								}
+							}
+						}
+					}
 				}
 			})
 

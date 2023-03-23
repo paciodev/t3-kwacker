@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 import Loading from "../Loading";
-import HomePost from "./HomePost";
+import Post from "../Post";
 
 const KwackerPosts = () => {
   const { data, error } = api.post.getAll.useQuery();
@@ -21,7 +21,7 @@ const KwackerPosts = () => {
       {data ? (
         <div className="space-y-5">
           {data.map((p) => (
-            <HomePost key={p.id} post={p} />
+            <Post key={p.id} post={p} redirect />
           ))}
         </div>
       ) : (

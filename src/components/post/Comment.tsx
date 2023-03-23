@@ -15,7 +15,10 @@ const Comment = ({
 }) => {
   return (
     <div className="flex rounded-xl bg-gray-200 p-5">
-      <div className="flex items-center justify-center">
+      <Link
+        href={`/user/${c?.authorId as string}`}
+        className="flex items-center justify-center transition-opacity hover:opacity-80"
+      >
         <Image
           src={c.author?.image as string}
           alt=""
@@ -23,7 +26,7 @@ const Comment = ({
           height={40}
           className="mx-auto mr-3 rounded-full"
         />
-      </div>
+      </Link>
       <div className="flex-1">
         <div className="flex">
           <Link

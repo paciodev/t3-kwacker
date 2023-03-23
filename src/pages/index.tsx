@@ -10,7 +10,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Kwacker - Modern social platform</title>
-        <meta name="description" content="Created by Pacio with passion" />
+        <meta name="description" content="Created by Pacio with T3 Stack" />
         <link rel="icon" href="/duck.png" />
       </Head>
       <main>

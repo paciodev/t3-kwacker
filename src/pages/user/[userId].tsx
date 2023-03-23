@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import Loading from "~/components/Loading";
 import NotFound from "~/components/NotFound";
+import Post from "~/components/Post";
+import UserInfo from "~/components/user/UserInfo";
 import { api } from "~/utils/api";
 
 const UserPage = () => {
@@ -10,16 +12,25 @@ const UserPage = () => {
   const { data, isLoading, error } = api.user.getById.useQuery({
     userId,
   });
-  console.log(data);
 
   return (
-    <div>
+    <div className="mx-auto max-w-7xl px-5">
       {error && <NotFound />}
       {isLoading && !error && <Loading />}
       {data && (
         <>
-          <h1>TA PODSTRONA DO ZROBIENIA</h1>
-          <p>{JSON.stringify(data)}</p>
+          <UserInfo
+            username={data.name as string}
+            image={data.image as string}
+            isAdmin={data.admin}
+            joinedAt={data.joinedAt}
+          />
+          <p className="my-6 text-center uppercase tracking-[0.5em]">Posts</p>
+          <div className="space-y-5">
+            {data.posts.map((p) => (
+              <Post post={p} key={p.id} redirect stopUserRedirect />
+            ))}
+          </div>
         </>
       )}
     </div>

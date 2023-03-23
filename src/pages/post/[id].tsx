@@ -2,10 +2,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Loading from "~/components/Loading";
 import NotFound from "~/components/NotFound";
+import Post from "~/components/Post";
 import Comment from "~/components/post/Comment";
 import CommentForm from "~/components/post/CommentForm";
 import { api } from "~/utils/api";
-import Post from "../../components/post/Post";
 
 const PostPage = () => {
   const router = useRouter();
