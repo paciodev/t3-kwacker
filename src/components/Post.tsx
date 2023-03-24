@@ -30,20 +30,15 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
   const crownRef = useRef<HTMLImageElement>(null);
   const photoRef = useRef<HTMLImageElement>(null);
 
-  const refs = [photoRef.current, crownRef.current, usernameRef.current];
-
   const handleRedirect = async (e: SyntheticEvent) => {
     if (!redirect) {
       return;
     }
+    const refs = [photoRef.current, crownRef.current, usernameRef.current];
     if (
       stopUserRedirect ||
       !refs.includes(e.target as HTMLSpanElement | HTMLImageElement)
     ) {
-      console.log(e.target);
-      console.log(photoRef.current);
-      console.log(crownRef.current);
-      console.log(usernameRef.current);
       await router.push(`/post/${post.id}`);
     }
   };
