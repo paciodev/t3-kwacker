@@ -40,6 +40,8 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
       stopUserRedirect ||
       !refs.includes(e.target as HTMLSpanElement | HTMLImageElement)
     ) {
+      console.log(e.target);
+      console.log(refs);
       await router.push(`/post/${post.id}`);
     }
   };

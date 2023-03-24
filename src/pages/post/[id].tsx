@@ -21,6 +21,11 @@ const PostPage = () => {
     <>
       <Head>
         <title>Kwacker - Post from {post?.author.name}</title>
+        <meta
+          name="description"
+          content={`${post?.author?.name as string} - ${post?.text as string}`}
+        />
+        <link rel="icon" href="/duck.png" />
       </Head>
       <div className="mx-auto max-w-7xl px-5">
         {error && <NotFound />}

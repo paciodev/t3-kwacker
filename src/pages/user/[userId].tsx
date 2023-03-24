@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import Loading from "~/components/Loading";
 import NotFound from "~/components/NotFound";
@@ -19,6 +20,14 @@ const UserPage = () => {
       {isLoading && !error && <Loading />}
       {data && (
         <>
+          <Head>
+            <title>Kwacker - {data?.name}</title>
+            <meta
+              name="description"
+              content={`Profile of ${data?.name as string}`}
+            />
+            <link rel="icon" href="/duck.png" />
+          </Head>
           <UserInfo
             username={data.name as string}
             image={data.image as string}
