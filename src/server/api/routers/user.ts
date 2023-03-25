@@ -19,6 +19,9 @@ export const userRouter = createTRPCRouter({
 					name: true,
 					joinedAt: true,
 					posts: {
+						where: {
+							published: true
+						},
 						orderBy: {
 							createdAt: 'desc'
 						},

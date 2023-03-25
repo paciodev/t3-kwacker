@@ -36,9 +36,15 @@ const UserPage = () => {
           />
           <p className="my-6 text-center uppercase tracking-[0.5em]">Posts</p>
           <div className="space-y-5">
-            {data.posts.map((p) => (
-              <Post post={p} key={p.id} redirect stopUserRedirect />
-            ))}
+            {data.posts.length ? (
+              <>
+                {data.posts.map((p) => (
+                  <Post post={p} key={p.id} redirect stopUserRedirect />
+                ))}
+              </>
+            ) : (
+              <p className="text-center">This user does not have any posts</p>
+            )}
           </div>
         </>
       )}

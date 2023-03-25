@@ -1,3 +1,4 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
 import {
   type Heart as HeartType,
   type Comment,
@@ -5,7 +6,10 @@ import {
 } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
 import ReactTimeago from "react-timeago";
+import { api } from "~/utils/api";
 import Heart from "./Heart";
 
 type Props = {
@@ -30,12 +34,28 @@ type Props = {
   };
   redirect?: boolean;
   stopUserRedirect?: boolean;
+  notDeleteOwn?: boolean;
 };
 
-const Post = ({ post, redirect, stopUserRedirect }: Props) => {
-  console.log(post);
+const Post = ({ post, redirect, stopUserRedirect, notDeleteOwn }: Props) => {
+  const router = useRouter();
+
+  const deleteOwnPost = api.post.deleteOwn.useMutation({
+    onError: (err) => {
+      toast.error(err.message);
+    },
+    onSuccess: async () => {
+      toast.success("Successfully deleted your post.");
+      await router.push("/");
+    },
+  });
+
+  const handleDeleteOwnPost = async () => {
+    await deleteOwnPost.mutateAsync({ postId: post.id });
+  };
+
   return (
-    <div className="flex space-x-5 rounded-xl bg-gray-200 p-5">
+    <div className="relative flex space-x-5 rounded-xl bg-gray-200 p-5">
       <div>
         {stopUserRedirect ? (
           <div>
@@ -117,6 +137,14 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
           </p>
         </div>
       </div>
+      {!notDeleteOwn && (
+        <div
+          className="absolute right-5 top-5 cursor-pointer"
+          onClick={() => void handleDeleteOwnPost()}
+        >
+          <TrashIcon className="h-6 w-6 text-red-600" />
+        </div>
+      )}
     </div>
   );
 };

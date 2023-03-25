@@ -21,9 +21,17 @@ const KwackerPosts = () => {
     <div className="mx-auto mt-12 max-w-7xl px-5">
       {data ? (
         <div className="space-y-5">
-          {data.map((p) => (
-            <Post key={p.id} post={p} redirect />
-          ))}
+          {data.length ? (
+            <>
+              {data.map((p) => (
+                <Post key={p.id} post={p} redirect notDeleteOwn />
+              ))}
+            </>
+          ) : (
+            <p className="text-center">
+              No post found. Time to write your own one
+            </p>
+          )}
         </div>
       ) : (
         <Loading />

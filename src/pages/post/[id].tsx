@@ -38,9 +38,17 @@ const PostPage = () => {
             </p>
             <CommentForm id={post.id} />
             <div className="mt-6 space-y-6">
-              {post.comments.map((c) => (
-                <Comment key={c.id} comment={c} />
-              ))}
+              {post.comments.length ? (
+                <>
+                  {post.comments.map((c) => (
+                    <Comment key={c.id} comment={c} />
+                  ))}
+                </>
+              ) : (
+                <p className="text-center">
+                  No comments found. Time to write your own one
+                </p>
+              )}
             </div>
           </>
         )}
