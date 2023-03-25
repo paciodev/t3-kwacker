@@ -17,6 +17,17 @@ export const postRouter = createTRPCRouter({
 				createdAt: 'desc'
 			},
 			include: {
+				_count: {
+					select: {
+						comments: true,
+						hearts: true
+					}
+				},
+				hearts: {
+					where: {
+						authorId: ctx.session?.user.id
+					}
+				},
 				author: {
 					select: {
 						admin: true,
@@ -45,6 +56,17 @@ export const postRouter = createTRPCRouter({
 					id: input.id
 				},
 				include: {
+					_count: {
+						select: {
+							comments: true,
+							hearts: true
+						}
+					},
+					hearts: {
+						where: {
+							authorId: ctx.session?.user.id
+						}
+					},
 					author: {
 						select: {
 							admin: true,

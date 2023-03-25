@@ -16,6 +16,15 @@ model Post {
   authorId  String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
+  hearts    Heart[]
+}
+
+model Heart {
+  id       String @id @default(cuid())
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
 }
 
 model Comment {
@@ -63,10 +72,12 @@ model User {
   emailVerified DateTime?
   image         String?
   admin         Boolean   @default(false)
+  banned        Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
   comments      Comment[]
+  hearts        Heart[]
 }
 
 model VerificationToken {

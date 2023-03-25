@@ -1,9 +1,12 @@
-import { type Comment, type Post as PostType } from "@prisma/client";
+import {
+  type Heart as HeartType,
+  type Comment,
+  type Post as PostType,
+} from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { type SyntheticEvent, useRef } from "react";
 import ReactTimeago from "react-timeago";
+import Heart from "./Heart";
 
 type Props = {
   post: PostType & {
@@ -19,63 +22,53 @@ type Props = {
       image: string | null;
       admin: boolean;
     };
+    hearts?: HeartType[];
+    _count: {
+      comments: number;
+      hearts: number;
+    };
   };
   redirect?: boolean;
   stopUserRedirect?: boolean;
 };
 
 const Post = ({ post, redirect, stopUserRedirect }: Props) => {
-  const router = useRouter();
-  const usernameRef = useRef<HTMLSpanElement>(null);
-  const crownRef = useRef<HTMLImageElement>(null);
-  const photoRef = useRef<HTMLImageElement>(null);
-
-  const handleRedirect = async (e: SyntheticEvent) => {
-    if (!redirect) {
-      return;
-    }
-    const refs = [photoRef.current, crownRef.current, usernameRef.current];
-    if (
-      stopUserRedirect ||
-      !refs.includes(e.target as HTMLSpanElement | HTMLImageElement)
-    ) {
-      await router.push(`/post/${post.id}`);
-    }
-  };
-
+  console.log(post);
   return (
-    <div
-      onClick={(e) => void handleRedirect(e)}
-      className={`flex space-x-5 rounded-xl bg-gray-200 p-5 ${
-        redirect ? "cursor-pointer transition-opacity hover:opacity-80" : ""
-      }`}
-    >
-      {stopUserRedirect ? (
-        <Image
-          ref={photoRef}
-          src={post?.author.image as string}
-          alt={`PFP of ${post?.author.name as string}`}
-          width={50}
-          height={50}
-          className="rounded-2xl"
-        />
-      ) : (
-        <Link href={`/user/${post?.authorId}`}>
-          <Image
-            ref={photoRef}
-            src={post?.author.image as string}
-            alt={`PFP of ${post?.author.name as string}`}
-            width={50}
-            height={50}
-            className="rounded-2xl transition-all hover:rounded-xl"
-          />
-        </Link>
-      )}
+    <div className="flex space-x-5 rounded-xl bg-gray-200 p-5">
       <div>
+        {stopUserRedirect ? (
+          <div>
+            <Image
+              src={post?.author.image as string}
+              alt={`PFP of ${post?.author.name as string}`}
+              width={50}
+              height={50}
+              className="rounded-2xl"
+            />
+          </div>
+        ) : (
+          <Link href={`/user/${post?.authorId}`}>
+            <Image
+              src={post?.author.image as string}
+              alt={`PFP of ${post?.author.name as string}`}
+              width={50}
+              height={50}
+              className="rounded-2xl transition-all hover:rounded-xl"
+            />
+          </Link>
+        )}
+        <Heart
+          count={post._count?.hearts}
+          hearts={post.hearts}
+          postId={post.id}
+        />
+      </div>
+      <div className="w-full">
         <div className="flex">
           {stopUserRedirect ? (
             <div className="mr-[3px] flex items-center font-bold">
-              <span ref={usernameRef}>{post.author.name}</span>
+              <span>{post.author.name}</span>
               {post.author.admin && (
                 <span className="ml-1">
                   <Image src="/crown.svg" alt="admin" width={14} height={14} />
@@ -89,13 +82,10 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
               className="flex items-center"
             >
               <div className="mr-[3px] flex items-center font-bold">
-                <span className="hover:underline" ref={usernameRef}>
-                  {post.author.name}
-                </span>
+                <span className="hover:underline">{post.author.name}</span>
                 {post.author.admin && (
                   <span className="ml-1">
                     <Image
-                      ref={crownRef}
                       src="/crown.svg"
                       alt="admin"
                       width={14}
@@ -111,6 +101,21 @@ const Post = ({ post, redirect, stopUserRedirect }: Props) => {
           <ReactTimeago date={post.createdAt} />
         </div>
         <p className="break-all">{post.text}</p>
+        {redirect && (
+          <div className="mt-2">
+            <Link
+              href={`/post/${post.id}`}
+              className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
+            >
+              See full post
+            </Link>
+          </div>
+        )}
+        <div className="flex flex-col items-end justify-end">
+          <p>
+            {post._count?.comments} comment{post._count?.comments !== 1 && "s"}
+          </p>
+        </div>
       </div>
     </div>
   );

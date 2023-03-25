@@ -8,7 +8,7 @@ export const userRouter = createTRPCRouter({
 			userId: z.string()
 		}))
 		.query(async ({ ctx, input }) => {
-			const user = await ctx.prisma.user.findFirst({
+			const user = await ctx.prisma.user.findUnique({
 				where: {
 					id: input.userId
 				},
@@ -19,7 +19,21 @@ export const userRouter = createTRPCRouter({
 					name: true,
 					joinedAt: true,
 					posts: {
+						orderBy: {
+							createdAt: 'desc'
+						},
 						include: {
+							_count: {
+								select: {
+									comments: true,
+									hearts: true
+								}
+							},
+							hearts: {
+								where: {
+									authorId: ctx.session?.user.id
+								}
+							},
 							author: {
 								select: {
 									admin: true,
