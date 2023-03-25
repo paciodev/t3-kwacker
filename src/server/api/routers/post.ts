@@ -25,7 +25,7 @@ export const postRouter = createTRPCRouter({
 				},
 				hearts: {
 					where: {
-						authorId: ctx.session?.user.id
+						authorId: ctx.session?.user.id || ''
 					}
 				},
 				author: {

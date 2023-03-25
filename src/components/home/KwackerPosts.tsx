@@ -5,7 +5,6 @@ import Post from "../Post";
 
 const KwackerPosts = () => {
   const { data, error } = api.post.getAll.useQuery();
-  console.log(data);
 
   if (error) {
     toast.error(`Kwack! ${error.message}`);

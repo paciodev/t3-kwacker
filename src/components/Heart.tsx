@@ -4,6 +4,7 @@ import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { Heart } from "@prisma/client";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type Props = {
   count: number;
@@ -14,6 +15,7 @@ type Props = {
 const Heart = ({ count, hearts, postId }: Props) => {
   const [isHeartGiven, setIsHeartGiven] = useState(false);
   const [countOfHearts, setCountOfHearts] = useState<number>(count);
+  const session = useSession();
 
   const addHeart = api.heart.add.useMutation({
     onMutate: () => {
@@ -40,6 +42,8 @@ const Heart = ({ count, hearts, postId }: Props) => {
   }, [hearts?.length]);
 
   const handleHeartClick = async (isGivingHeart: boolean) => {
+    if (!session.data?.user.id) return;
+
     setIsHeartGiven(isGivingHeart);
     if (isGivingHeart) {
       return await addHeart.mutateAsync({ postId });
