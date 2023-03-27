@@ -6,6 +6,7 @@ import {
 	protectedProcedure,
 	publicProcedure,
 } from "~/server/api/trpc";
+import checkIsBanned from '~/server/utils/checkIsBanned';
 
 export const postRouter = createTRPCRouter({
 	getAll: publicProcedure.query(({ ctx }) => {
@@ -98,6 +99,7 @@ export const postRouter = createTRPCRouter({
 			return post
 		}),
 	add: protectedProcedure.input(z.object({ text: z.string() })).mutation(async ({ ctx, input }) => {
+		await checkIsBanned(ctx.session.user.id)
 		const text = input.text.trim()
 
 		if (text.length === 0)

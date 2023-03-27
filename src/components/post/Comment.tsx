@@ -1,6 +1,10 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { Comment } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+import { api } from "~/utils/api";
 
 const Comment = ({
   comment: c,
@@ -13,6 +17,23 @@ const Comment = ({
     } | null;
   };
 }) => {
+  const utils = api.useContext();
+  const session = useSession();
+
+  const deleteComment = api.comment.deleteOwn.useMutation({
+    onError: (err) => {
+      toast.error(err.message);
+    },
+    onSuccess: async () => {
+      toast.success("Successfully deleted your comment.");
+      await utils.post.getById.invalidate();
+    },
+  });
+
+  const handleDeleteOwnComment = async () => {
+    await deleteComment.mutateAsync({ commentId: c.id });
+  };
+
   return (
     <div className="flex rounded-xl bg-gray-200 p-5">
       <Link
@@ -43,6 +64,14 @@ const Comment = ({
         </div>
         <p>{c.message}</p>
       </div>
+      {session.data?.user.id === c?.authorId && (
+        <div
+          className="group grid cursor-pointer place-content-center"
+          onClick={() => void handleDeleteOwnComment()}
+        >
+          <TrashIcon className="h-6 w-6 text-red-600 group-hover:text-red-800" />
+        </div>
+      )}
     </div>
   );
 };

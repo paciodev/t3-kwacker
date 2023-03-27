@@ -23,7 +23,7 @@ const KwackerPosts = () => {
           {data.length ? (
             <>
               {data.map((p) => (
-                <Post key={p.id} post={p} redirect notDeleteOwn />
+                <Post key={p.id} post={p} redirect />
               ))}
             </>
           ) : (

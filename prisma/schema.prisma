@@ -17,6 +17,15 @@ model Post {
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
   hearts    Heart[]
+  Report    Report[]
+}
+
+model Report {
+  id       String @id @default(cuid())
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Heart {
@@ -78,6 +87,7 @@ model User {
   posts         Post[]
   comments      Comment[]
   hearts        Heart[]
+  reports       Report[]
 }
 
 model VerificationToken {

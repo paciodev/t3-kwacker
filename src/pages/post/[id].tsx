@@ -32,7 +32,7 @@ const PostPage = () => {
         {isLoading && !error && <Loading />}
         {post && (
           <>
-            <Post post={post} />
+            <Post post={post} redirectAfterDelete />
             <p className="mt-3 text-center uppercase tracking-[0.5em]">
               Comments
             </p>
