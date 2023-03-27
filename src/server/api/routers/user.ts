@@ -8,9 +8,10 @@ export const userRouter = createTRPCRouter({
 			userId: z.string()
 		}))
 		.query(async ({ ctx, input }) => {
-			const user = await ctx.prisma.user.findUnique({
+			const user = await ctx.prisma.user.findFirst({
 				where: {
-					id: input.userId
+					id: input.userId,
+					banned: false
 				},
 				select: {
 					admin: true,

@@ -12,7 +12,10 @@ export const postRouter = createTRPCRouter({
 	getAll: publicProcedure.query(({ ctx }) => {
 		return ctx.prisma.post.findMany({
 			where: {
-				published: true
+				published: true,
+				author: {
+					banned: false
+				}
 			},
 			orderBy: {
 				createdAt: 'desc'
@@ -52,9 +55,13 @@ export const postRouter = createTRPCRouter({
 				})
 			}
 
-			const post = await ctx.prisma.post.findUnique({
+			const post = await ctx.prisma.post.findFirst({
 				where: {
-					id: input.id
+					id: input.id,
+					published: true,
+					author: {
+						banned: false
+					}
 				},
 				include: {
 					_count: {
@@ -72,10 +79,15 @@ export const postRouter = createTRPCRouter({
 						select: {
 							admin: true,
 							image: true,
-							name: true
+							name: true,
 						}
 					},
 					comments: {
+						where: {
+							author: {
+								banned: false
+							}
+						},
 						include: {
 							author: {
 								select: {
@@ -89,7 +101,7 @@ export const postRouter = createTRPCRouter({
 				},
 			})
 
-			if (!post || !post.published) {
+			if (!post) {
 				throw new TRPCError({
 					code: 'BAD_REQUEST',
 					message: 'Please provide valid id'
