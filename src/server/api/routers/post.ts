@@ -156,5 +156,5 @@ export const postRouter = createTRPCRouter({
 			}
 
 			return postToDelete
-		})
+		}),
 });

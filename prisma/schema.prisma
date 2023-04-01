@@ -17,7 +17,7 @@ model Post {
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]
   hearts    Heart[]
-  Report    Report[]
+  reports   Report[]
 }
 
 model Report {

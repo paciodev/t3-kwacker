@@ -44,5 +44,27 @@ export const adminRouter = createTRPCRouter({
 					banned: true
 				}
 			})
+		}),
+	deletePost: protectedProcedure
+		.input(z.object({
+			postId: z.string()
+		}))
+		.mutation(async ({ ctx, input }) => {
+			const isAdmin = await checkIsAdmin(ctx.session.user.id)
+			if (!isAdmin) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: "You are not allowed delete someone's post"
+				})
+			}
+
+			return await ctx.prisma.post.update({
+				where: {
+					id: input.postId
+				},
+				data: {
+					published: false
+				}
+			})
 		})
 })

@@ -49,10 +49,10 @@ const MenuComponent = ({ post, redirectAfterDelete }: Props) => {
 
   const deleteOwnPost = api.post.deleteOwn.useMutation({
     onError: (err) => {
-      toast.error(err.message);
+      toast.error(err.message, { id: toastId });
     },
     onSuccess: async () => {
-      toast.success("Successfully deleted your post.");
+      toast.success("Successfully deleted your post.", { id: toastId });
       if (redirectAfterDelete) {
         return await router.push("/");
       }
@@ -61,8 +61,42 @@ const MenuComponent = ({ post, redirectAfterDelete }: Props) => {
     },
   });
 
-  const handleReportPost = () => {
-    toast.error("This function is not yet available.");
+  const reportPost = api.report.create.useMutation({
+    onError: (err) => {
+      toast.error(err.message, { id: toastId });
+    },
+    onSuccess: () => {
+      toast.success(
+        `Successfully reported ${post.author.name as string}'s post`,
+        { id: toastId }
+      );
+    },
+  });
+
+  const deleteSomeonesPost = api.admin.deletePost.useMutation({
+    onError: (err) => {
+      toast.error(err.message, { id: toastId });
+    },
+    onSuccess: async () => {
+      toast.success(
+        `Successfully deleted ${post.author.name as string}'s post`,
+        { id: toastId }
+      );
+      if (redirectAfterDelete) {
+        return await router.push("/");
+      }
+
+      await utils.invalidate();
+    },
+  });
+
+  const handleReportPost = async () => {
+    if (post.authorId === session.data?.user.id) {
+      return toast.error("Kwack! You cannot report own post.");
+    }
+
+    toastId = toast.loading(`Reporting post of ${post.author.name as string}`);
+    await reportPost.mutateAsync({ postId: post.id });
   };
 
   const handleBanUser = async () => {
@@ -72,15 +106,21 @@ const MenuComponent = ({ post, redirectAfterDelete }: Props) => {
 
   const handleDeletePost = async () => {
     if (post.authorId === session.data?.user.id) {
-      await deleteOwnPost.mutateAsync({ postId: post.id });
+      toastId = toast.loading(`Deleting your post...`);
+      return await deleteOwnPost.mutateAsync({ postId: post.id });
     }
+    toastId = toast.loading(`Deleting post of ${post.author.name as string}`);
+    await deleteSomeonesPost.mutateAsync({ postId: post.id });
   };
 
   return (
     <Menu as="div" className="absolute top-5 right-5 z-30 flex items-start">
       <Menu.Items className="flex flex-col space-y-1 rounded bg-white p-3 shadow">
         <Menu.Item>
-          <button onClick={handleReportPost} className="hover:text-green-900">
+          <button
+            onClick={() => void handleReportPost()}
+            className="hover:text-green-900"
+          >
             Report post
           </button>
         </Menu.Item>

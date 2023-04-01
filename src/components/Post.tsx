@@ -3,10 +3,11 @@ import {
   type Comment,
   type Post as PostType,
 } from "@prisma/client";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import ReactTimeago from "react-timeago";
 import Heart from "./Heart";
 import Menu from "./post/Menu";
 
@@ -42,6 +43,9 @@ const Post = ({
   redirectAfterDelete,
 }: Props) => {
   const session = useSession();
+
+  dayjs.extend(relativeTime);
+  const postedAt = dayjs(post.createdAt).fromNow();
 
   return (
     <div className="relative flex space-x-5 rounded-xl bg-gray-200 p-5">
@@ -107,7 +111,7 @@ const Post = ({
             </Link>
           )}
 
-          <div>{post.createdAt.toLocaleTimeString()}</div>
+          <div>{postedAt}</div>
         </div>
         <p className="break-all">{post.text}</p>
         {redirect && (
