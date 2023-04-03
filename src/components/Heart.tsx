@@ -23,6 +23,7 @@ const Heart = ({ count, hearts, postId }: Props) => {
     },
     onError: (err) => {
       setCountOfHearts((p) => p - 1);
+      setIsHeartGiven(false);
       toast.error(err.message);
     },
   });
@@ -33,6 +34,7 @@ const Heart = ({ count, hearts, postId }: Props) => {
     },
     onError: (err) => {
       setCountOfHearts((p) => p + 1);
+      setIsHeartGiven(true);
       toast.error(err.message);
     },
   });

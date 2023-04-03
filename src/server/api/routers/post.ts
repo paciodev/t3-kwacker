@@ -9,8 +9,8 @@ import {
 import checkIsBanned from '~/server/utils/checkIsBanned';
 
 export const postRouter = createTRPCRouter({
-	getAll: publicProcedure.query(({ ctx }) => {
-		return ctx.prisma.post.findMany({
+	getAll: publicProcedure.query(async ({ ctx }) => {
+		return await ctx.prisma.post.findMany({
 			where: {
 				published: true,
 				author: {
