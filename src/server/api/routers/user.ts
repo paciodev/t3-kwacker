@@ -1,39 +1,8 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, publicProcedure } from '../trpc';
 
 export const userRouter = createTRPCRouter({
-	checkPermissions: protectedProcedure
-		.input(z.object({
-			userId: z.string()
-		}))
-		.query(async ({ ctx, input }) => {
-			if (ctx.session.user.id !== input.userId) {
-				throw new TRPCError({
-					code: 'UNAUTHORIZED',
-					message: 'You cannot check info of someone else'
-				})
-			}
-
-			const permissions = await ctx.prisma.user.findUnique({
-				where: {
-					id: input.userId
-				},
-				select: {
-					admin: true,
-					banned: true,
-				}
-			})
-
-			if (!permissions) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'User not found'
-				})
-			}
-
-			return permissions
-		}),
 	getById: publicProcedure
 		.input(z.object({
 			userId: z.string()
