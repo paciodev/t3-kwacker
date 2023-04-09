@@ -115,20 +115,26 @@ const Post = ({
         </div>
         <p className="break-all">{post.text}</p>
         {redirect && (
-          <div className="mt-2">
+          <>
+            <div className="mt-2">
+              <Link
+                href={`/post/${post.id}`}
+                className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
+              >
+                See full post
+              </Link>
+            </div>
             <Link
               href={`/post/${post.id}`}
-              className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
+              className="flex flex-col items-end justify-end"
             >
-              See full post
+              <p>
+                {post._count?.comments} comment
+                {post._count?.comments !== 1 && "s"}
+              </p>
             </Link>
-          </div>
+          </>
         )}
-        <div className="flex flex-col items-end justify-end">
-          <p>
-            {post._count?.comments} comment{post._count?.comments !== 1 && "s"}
-          </p>
-        </div>
       </div>
       {session.data?.user && (
         <Menu post={post} redirectAfterDelete={redirectAfterDelete} />

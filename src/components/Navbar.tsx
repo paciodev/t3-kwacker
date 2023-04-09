@@ -15,7 +15,7 @@ const Navbar = () => {
 
         <div className="flex items-center justify-center">
           <button
-            onClick={session ? () => void signOut() : () => void signIn()}
+            onClick={session ? () => void signOut() : () => void signIn('discord')}
             className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
           >
             {session ? "Sign out" : "Sign in"}
