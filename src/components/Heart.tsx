@@ -3,7 +3,6 @@ import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { Heart } from "@prisma/client";
 import { api } from "~/utils/api";
-import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
 type Props = {
@@ -21,17 +20,11 @@ const Heart = ({ count, hearts, postId }: Props) => {
     onMutate: () => {
       setCountOfHearts((p) => p + 1);
     },
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   const removeHeart = api.heart.remove.useMutation({
     onMutate: () => {
       setCountOfHearts((p) => p - 1);
-    },
-    onError: (err) => {
-      toast.error(err.message);
     },
   });
 
