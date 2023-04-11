@@ -9,7 +9,7 @@ const checkIsBanned = async (uid: string): Promise<false> => {
 	if (user?.banned) {
 		throw new TRPCError({
 			code: 'UNAUTHORIZED',
-			message: 'You cannot perform this action'
+			message: '[BANNED] You cannot perform that action.'
 		})
 	}
 	return false

@@ -113,7 +113,7 @@ const Post = ({
 
           <div>{postedAt}</div>
         </div>
-        <p className="break-all">{post.text}</p>
+        <p className="break-all pr-5">{post.text}</p>
         {redirect && (
           <>
             <div className="mt-2">

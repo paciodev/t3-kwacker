@@ -29,8 +29,12 @@ const Heart = ({ count, hearts, postId }: Props) => {
   });
 
   useEffect(() => {
-    setIsHeartGiven(hearts?.length === 1);
-  }, [hearts?.length]);
+    if (session.data?.user) {
+      setIsHeartGiven(hearts?.length === 1);
+    } else {
+      setIsHeartGiven(false);
+    }
+  }, [hearts?.length, session.data?.user]);
 
   const handleHeartClick = async (isGivingHeart: boolean) => {
     if (!session.data?.user.id) return;
