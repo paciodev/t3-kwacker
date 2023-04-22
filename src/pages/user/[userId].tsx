@@ -32,18 +32,29 @@ const UserPage = () => {
             username={data.name as string}
             image={data.image as string}
             isAdmin={data.admin}
+            isBanned={data.banned}
             joinedAt={data.joinedAt}
           />
           <p className="my-6 text-center uppercase tracking-[0.5em]">Posts</p>
           <div className="space-y-5">
-            {data.posts.length ? (
-              <>
-                {data.posts.map((p) => (
-                  <Post post={p} key={p.id} redirect stopUserRedirect />
-                ))}
-              </>
+            {data.banned ? (
+              <p className="text-center font-bold text-red-600">
+                This user is banned so you cannot see his posts.
+              </p>
             ) : (
-              <p className="text-center">This user does not have any posts</p>
+              <>
+                {data.posts.length ? (
+                  <>
+                    {data.posts.map((p) => (
+                      <Post post={p} key={p.id} redirect stopUserRedirect />
+                    ))}
+                  </>
+                ) : (
+                  <p className="text-center">
+                    This user does not have any posts
+                  </p>
+                )}
+              </>
             )}
           </div>
         </>

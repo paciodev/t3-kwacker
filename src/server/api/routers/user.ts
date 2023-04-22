@@ -11,10 +11,10 @@ export const userRouter = createTRPCRouter({
 			const user = await ctx.prisma.user.findFirst({
 				where: {
 					id: input.userId,
-					banned: false
 				},
 				select: {
 					admin: true,
+					banned: true,
 					id: true,
 					image: true,
 					name: true,
