@@ -1,6 +1,6 @@
 # t3-kwacker
 
-Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of feautures like commenting, admin panel, or for example reporting posts.
+Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of features like commenting, admin panel, or for example reporting posts.
 
 ## Features
 
