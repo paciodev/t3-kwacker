@@ -45,6 +45,42 @@ export const adminRouter = createTRPCRouter({
 				}
 			})
 		}),
+	unbanUser: protectedProcedure
+		.input(z.object({
+			userId: z.string()
+		}))
+		.mutation(async ({ ctx, input }) => {
+			const isAdmin = await checkIsAdmin(ctx.session.user.id)
+			if (!isAdmin) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: 'You are not allowed to unban people'
+				})
+			}
+
+			const userToUnban = await ctx.prisma.user.findUnique({
+				where: {
+					id: input.userId
+				}
+			})
+
+
+			if (!userToUnban?.banned) {
+				throw new TRPCError({
+					code: 'CONFLICT',
+					message: 'You cannot unban not banned user'
+				})
+			}
+
+			return await ctx.prisma.user.update({
+				where: {
+					id: input.userId
+				},
+				data: {
+					banned: false
+				}
+			})
+		}),
 	deletePost: protectedProcedure
 		.input(z.object({
 			postId: z.string()

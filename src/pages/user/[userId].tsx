@@ -29,6 +29,7 @@ const UserPage = () => {
             <link rel="icon" href="/duck.png" />
           </Head>
           <UserInfo
+            userId={userId}
             username={data.name as string}
             image={data.image as string}
             isAdmin={data.admin}
