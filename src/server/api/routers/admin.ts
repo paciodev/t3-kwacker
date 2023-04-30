@@ -90,7 +90,7 @@ export const adminRouter = createTRPCRouter({
 			if (!isAdmin) {
 				throw new TRPCError({
 					code: 'UNAUTHORIZED',
-					message: "You are not allowed delete someone's post"
+					message: "You are not allowed to delete someone's post"
 				})
 			}
 

@@ -6,6 +6,7 @@ import {
 	protectedProcedure,
 	publicProcedure,
 } from "~/server/api/trpc";
+import checkIsAdmin from '~/server/utils/checkIsAdmin';
 import checkIsBanned from '~/server/utils/checkIsBanned';
 
 export const postRouter = createTRPCRouter({
@@ -157,4 +158,38 @@ export const postRouter = createTRPCRouter({
 
 			return postToDelete
 		}),
+
+	getMostReported: protectedProcedure.query(async ({ ctx }) => {
+		const isAdmin = await checkIsAdmin(ctx.session.user.id)
+		if (!isAdmin) {
+			throw new TRPCError({
+				code: 'UNAUTHORIZED',
+				message: "You are not allowed to view reported posts"
+			})
+		}
+
+		const reportedPosts = await ctx.prisma.post.findMany({
+			where: {
+				reports: {
+					some: {}
+				},
+				author: {
+					banned: false
+				}
+			},
+			include: {
+				reports: true
+			},
+			orderBy: {
+				reports: {
+					_count: 'desc'
+				}
+			}
+		})
+
+		return reportedPosts.map(p => ({
+			...p,
+			reportCount: p.reports.length
+		}))
+	})
 });
