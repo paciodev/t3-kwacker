@@ -12,7 +12,8 @@ Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of
 - Adding hearts to posts
 - _As admin_ Deleting other posts
 - _As admin_ Banning users from app
-- **In future** _As admin_ Checking reported posts
+- _As admin_ Checking reported posts
+- **In future** _As admin_ Unbanning banned users
 
 ## Screenshots
 
