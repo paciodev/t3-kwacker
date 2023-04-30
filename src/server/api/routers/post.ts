@@ -170,6 +170,7 @@ export const postRouter = createTRPCRouter({
 
 		const reportedPosts = await ctx.prisma.post.findMany({
 			where: {
+				published: true,
 				reports: {
 					some: {}
 				},
