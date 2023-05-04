@@ -13,7 +13,8 @@ Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of
 - _As admin_ Deleting other posts
 - _As admin_ Banning users from app
 - _As admin_ Checking reported posts
-- **In future** _As admin_ Unbanning banned users
+- _As admin_ Unbanning banned users
+- **In future** Restoring and checking deleted posts
 
 ## Screenshots
 

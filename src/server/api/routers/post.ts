@@ -159,8 +159,8 @@ export const postRouter = createTRPCRouter({
 			return postToDelete
 		}),
 
-	getMostReported: protectedProcedure.query(async ({ ctx }) => {
-		const isAdmin = await checkIsAdmin(ctx.session.user.id)
+	getMostReported: publicProcedure.query(async ({ ctx }) => {
+		const isAdmin = await checkIsAdmin(ctx?.session?.user?.id)
 		if (!isAdmin) {
 			throw new TRPCError({
 				code: 'UNAUTHORIZED',

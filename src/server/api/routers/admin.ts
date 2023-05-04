@@ -102,5 +102,23 @@ export const adminRouter = createTRPCRouter({
 					published: false
 				}
 			})
+		}),
+	getBannedUsers: protectedProcedure.query(async ({ ctx }) => {
+		const isAdmin = await checkIsAdmin(ctx.session.user.id)
+		if (!isAdmin) {
+			throw new TRPCError({
+				code: 'UNAUTHORIZED',
+				message: "You are not allowed to get banned users"
+			})
+		}
+
+		return await ctx.prisma.user.findMany({
+			where: {
+				banned: true,
+				id: {
+					not: ctx.session.user.id
+				}
+			}
 		})
+	})
 })

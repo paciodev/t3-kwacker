@@ -68,7 +68,7 @@ const ReportedPost = ({ post }: Props) => {
   };
 
   return (
-    <div key={post?.id} className="border-y-2 sm:text-xl">
+    <div className="border-y-2 sm:text-xl">
       <p>
         <span className="font-bold">Post content: </span>
         {post?.text}
