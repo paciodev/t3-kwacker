@@ -17,9 +17,7 @@ const BannedPage = () => {
       ) : data.length > 0 ? (
         <div className="mx-auto max-w-3xl space-y-8 px-5">
           {data.map((u) => (
-            <>
-              <BannedUser key={u.id} user={u} />
-            </>
+            <BannedUser key={u.id} user={u} />
           ))}
         </div>
       ) : (

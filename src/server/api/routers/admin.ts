@@ -120,5 +120,34 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		})
-	})
+	}),
+
+	getBannedUserPosts: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(async ({ ctx, input }) => {
+			const isAdmin = await checkIsAdmin(ctx.session.user.id)
+			if (!isAdmin) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: "You are not allowed to get this data"
+				})
+			}
+
+			const user = await ctx.prisma.user.findUnique({
+				where: {
+					id: input.userId
+				}
+			})
+
+			if (!user || !user.banned) throw new TRPCError({
+				code: 'CONFLICT',
+				message: 'Provided user is not banned'
+			})
+
+			return await ctx.prisma.post.findMany({
+				where: {
+					authorId: input.userId
+				}
+			})
+		})
 })
