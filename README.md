@@ -28,7 +28,7 @@ Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of
 
 **Client:** React, TailwindCSS, Heroicons, react-query, dayjs
 
-**Server:** Nextjs, prisma, next-auth
+**Server:** Nextjs, tRPC, prisma, next-auth
 
 ## Environment Variables
 
