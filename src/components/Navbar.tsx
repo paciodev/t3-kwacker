@@ -1,3 +1,4 @@
+import { Menu } from "@headlessui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,22 +15,57 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center justify-center">
-          <button
-            onClick={session ? () => void signOut() : () => void signIn('discord')}
-            className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
-          >
-            {session ? "Sign out" : "Sign in"}
-          </button>
-          {session?.user && (
-            <Link href={`/user/${session.user.id || ""}`}>
-              <Image
-                src={session?.user.image || "/avatar.webp"}
-                className="ml-6 rounded-xl shadow transition-all hover:rounded-2xl"
-                alt=""
-                width={50}
-                height={50}
-              />
-            </Link>
+          {session?.user ? (
+            <div className="ml-6">
+              <Menu as="div" className="relative inline-block text-left">
+                <div>
+                  <Menu.Button>
+                    <Image
+                      src={session?.user.image || "/avatar.webp"}
+                      className=" rounded-xl shadow transition-all hover:rounded-2xl"
+                      alt=""
+                      width={50}
+                      height={50}
+                    />
+                  </Menu.Button>
+                </div>
+                <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="px-1 py-2">
+                    <Menu.Item>
+                      <Link
+                        href={`/user/${session.user.id}`}
+                        className="flex w-full rounded-md px-3 py-2 text-sm hover:bg-green-900 hover:text-white"
+                      >
+                        Your Profile
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link
+                        href="/settings"
+                        className="flex w-full rounded-md px-3 py-2 text-sm hover:bg-green-900 hover:text-white"
+                      >
+                        Settings
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button
+                        onClick={() => void signOut()}
+                        className="flex w-full rounded-md px-3 py-2 text-sm hover:bg-green-900 hover:text-white"
+                      >
+                        Sign out
+                      </button>
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Menu>
+            </div>
+          ) : (
+            <button
+              onClick={() => void signIn("discord")}
+              className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
+            >
+              Sign in
+            </button>
           )}
         </div>
       </div>

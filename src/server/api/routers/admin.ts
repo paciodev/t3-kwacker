@@ -94,13 +94,10 @@ export const adminRouter = createTRPCRouter({
 				})
 			}
 
-			return await ctx.prisma.post.update({
+			return await ctx.prisma.post.delete({
 				where: {
 					id: input.postId
 				},
-				data: {
-					published: false
-				}
 			})
 		}),
 	getBannedUsers: protectedProcedure.query(async ({ ctx }) => {

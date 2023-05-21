@@ -192,5 +192,14 @@ export const postRouter = createTRPCRouter({
 			...p,
 			reportCount: p.reports.length
 		}))
+	}),
+
+	getOwnDeleted: protectedProcedure.query(({ ctx }) => {
+		return ctx.prisma.post.findMany({
+			where: {
+				authorId: ctx.session.user.id,
+				published: false
+			}
+		})
 	})
 });
