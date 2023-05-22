@@ -41,7 +41,7 @@ const SettingsPage = () => {
           <li
             key={setting.tabKey}
             className={clsx(
-              "cursor-pointer border-l-4 border-transparent py-4 px-8",
+              "cursor-pointer rounded-r-lg border-l-4 border-transparent py-4 px-8",
               (router.query.tab === setting.tabKey ||
                 (setting.default && !router.query.tab)) &&
                 "!border-green-900 bg-green-50"

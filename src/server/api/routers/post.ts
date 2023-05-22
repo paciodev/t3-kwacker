@@ -194,12 +194,44 @@ export const postRouter = createTRPCRouter({
 		}))
 	}),
 
-	getOwnDeleted: protectedProcedure.query(({ ctx }) => {
-		return ctx.prisma.post.findMany({
+	getOwnDeleted: protectedProcedure.query(async ({ ctx }) => {
+		return await ctx.prisma.post.findMany({
 			where: {
 				authorId: ctx.session.user.id,
 				published: false
+			},
+			orderBy: {
+				updatedAt: 'desc'
 			}
 		})
-	})
-});
+	}),
+
+	restoreOwnPost: protectedProcedure
+		.input(z.object({ postId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			const postToRestore = await ctx.prisma.post.findFirst({
+				where: {
+					id: input.postId,
+					authorId: ctx.session.user.id,
+					published: false
+				}
+			})
+
+			if (!postToRestore) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Deleted post not found'
+				})
+			}
+
+			return await ctx.prisma.post.update({
+				where: {
+					id: postToRestore.id,
+				},
+				data: {
+					published: true
+				}
+			})
+		})
+})
+
