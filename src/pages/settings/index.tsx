@@ -6,47 +6,58 @@ import clsx from "clsx";
 import DeletedPosts from "~/components/settings/DeletedPosts";
 import ProfileSettings from "~/components/settings/ProfileSettings";
 
+type Settings = {
+  tabKey: string;
+  component: React.ReactNode;
+  label: string;
+  default?: boolean;
+}[];
+
 const SettingsPage = () => {
   const router = useRouter();
 
-  const settings = {
-    profile: <ProfileSettings />,
-    deleted: <DeletedPosts />,
-  };
+  const settings: Settings = [
+    {
+      tabKey: "profile",
+      component: <ProfileSettings />,
+      label: "Profile",
+      default: true,
+    },
+    {
+      tabKey: "deleted",
+      component: <DeletedPosts />,
+      label: "Deleted posts",
+    },
+  ];
+
+  const currentSetting = settings.some((s) => s.tabKey === router.query.tab)
+    ? settings.findIndex((s) => s.tabKey === router.query.tab)
+    : 0;
 
   return (
     <div className="mx-auto mt-16 flex max-w-7xl px-5">
       <ul className="pr-12">
-        <li
-          className={clsx(
-            "cursor-pointer border-l-4 border-transparent py-4 px-8",
-            (router.query.tab === "profile" || !router.query.tab) &&
-              "!border-green-900 bg-green-50"
-          )}
-          onClick={() =>
-            void router.push("/settings?tab=profile", undefined, {
-              shallow: true,
-            })
-          }
-        >
-          Profile
-        </li>
-        <li
-          className={clsx(
-            "cursor-pointer border-l-4 border-transparent py-4 px-8",
-            router.query.tab === "deleted" && "!border-green-900 bg-green-50"
-          )}
-          onClick={() =>
-            void router.push("/settings?tab=deleted", undefined, {
-              shallow: true,
-            })
-          }
-        >
-          Deleted Posts
-        </li>
+        {settings.map((setting) => (
+          <li
+            key={setting.tabKey}
+            className={clsx(
+              "cursor-pointer border-l-4 border-transparent py-4 px-8",
+              (router.query.tab === setting.tabKey ||
+                (setting.default && !router.query.tab)) &&
+                "!border-green-900 bg-green-50"
+            )}
+            onClick={() =>
+              void router.push(`/settings?tab=${setting.tabKey}`, undefined, {
+                shallow: true,
+              })
+            }
+          >
+            {setting.label}
+          </li>
+        ))}
       </ul>
       <div className="flex-1 border-l-4 border-green-900 pl-12">
-        {settings[(router.query.tab as keyof typeof settings) || "profile"]}
+        {settings[currentSetting]?.component}
       </div>
     </div>
   );
