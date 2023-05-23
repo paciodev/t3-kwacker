@@ -3,6 +3,8 @@ import Loading from "../Loading";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Menu } from "@headlessui/react";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 
 let toastId: string;
 
@@ -12,8 +14,17 @@ const DeletedPosts = () => {
   const { data, isLoading } = api.post.getOwnDeleted.useQuery();
   const restorePost = api.post.restoreOwnPost.useMutation({
     onSuccess: async () => {
-      await utils.post.invalidate();
+      await utils.post.getOwnDeleted.invalidate();
       toast.success("Successfully restored your post!", { id: toastId });
+    },
+    onError: (err) => {
+      toast.error(err.message, { id: toastId });
+    },
+  });
+  const deletePost = api.post.deletePermanentlyOwnPost.useMutation({
+    onSuccess: async () => {
+      await utils.post.getOwnDeleted.invalidate();
+      toast.success("Successfully deleted your post!", { id: toastId });
     },
     onError: (err) => {
       toast.error(err.message, { id: toastId });
@@ -23,6 +34,11 @@ const DeletedPosts = () => {
   const handleRestorePost = async (id: string) => {
     toastId = toast.loading("Restoring your post...");
     await restorePost.mutateAsync({ postId: id });
+  };
+
+  const handleDeletePermanently = async (id: string) => {
+    toastId = toast.loading("Deleting your post from database...");
+    await deletePost.mutateAsync({ postId: id });
   };
 
   dayjs.extend(relativeTime);
@@ -51,12 +67,25 @@ const DeletedPosts = () => {
                   <p className="break-all">
                     <span className="font-bold">{createdAt} -</span> {post.text}
                   </p>
-                  <button
-                    onClick={() => void handleRestorePost(post.id)}
-                    className="ml-2 rounded-lg bg-green-900 py-2 px-6 font-bold text-white transition-opacity hover:opacity-75"
-                  >
-                    Restore
-                  </button>
+                  <Menu as="div" className="relative flex items-start">
+                    <Menu.Items className="absolute -top-2 right-8 flex flex-col space-y-1 rounded-lg bg-white p-5 shadow">
+                      <button
+                        onClick={() => void handleRestorePost(post.id)}
+                        className="rounded-lg bg-green-900 py-2 px-6 font-bold text-white transition-opacity hover:opacity-75"
+                      >
+                        Restore
+                      </button>
+                      <button
+                        onClick={() => void handleDeletePermanently(post.id)}
+                        className="rounded-lg bg-red-900 py-2 px-6 font-bold text-white transition-opacity hover:opacity-75"
+                      >
+                        Delete permanently
+                      </button>
+                    </Menu.Items>
+                    <Menu.Button>
+                      <EllipsisVerticalIcon className="h-7 w-7 text-gray-600" />
+                    </Menu.Button>
+                  </Menu>
                 </div>
               );
             })}

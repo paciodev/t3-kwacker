@@ -57,7 +57,7 @@ const MenuComponent = ({ post, redirectAfterDelete }: Props) => {
         return await router.push("/");
       }
 
-      await utils.invalidate();
+      await utils.post.invalidate();
     },
   });
 

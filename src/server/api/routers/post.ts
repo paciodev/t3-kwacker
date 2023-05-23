@@ -232,6 +232,31 @@ export const postRouter = createTRPCRouter({
 					published: true
 				}
 			})
+		}),
+
+	deletePermanentlyOwnPost: protectedProcedure
+		.input(z.object({ postId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			const postToDelete = await ctx.prisma.post.findFirst({
+				where: {
+					id: input.postId,
+					authorId: ctx.session.user.id,
+					published: false
+				}
+			})
+
+			if (!postToDelete) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Post not found'
+				})
+			}
+
+			return await ctx.prisma.post.delete({
+				where: {
+					id: postToDelete.id
+				}
+			})
 		})
 })
 
