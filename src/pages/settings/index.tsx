@@ -1,11 +1,11 @@
 import { type GetServerSideProps } from "next";
 import { type Session } from "next-auth";
 import { useRouter } from "next/router";
-import serverAdminSession from "~/utils/serverAdminSession";
 import clsx from "clsx";
 import DeletedPosts from "~/components/settings/DeletedPosts";
 import ProfileSettings from "~/components/settings/ProfileSettings";
 import Head from "next/head";
+import authenticatedSession from "~/utils/authenticatedSession";
 
 type Settings = {
   tabKey: string;
@@ -75,4 +75,4 @@ export default SettingsPage;
 
 export const getServerSideProps: GetServerSideProps<{
   session: Session | null;
-}> = async (ctx) => serverAdminSession(ctx);
+}> = async (ctx) => authenticatedSession(ctx);

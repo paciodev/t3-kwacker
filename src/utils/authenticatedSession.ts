@@ -2,12 +2,12 @@ import { type GetServerSideProps } from 'next';
 import { type Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 
-const serverAdminSession: GetServerSideProps<{
+const authenticatedSession: GetServerSideProps<{
 	session: Session | null;
 }> = async (ctx) => {
 	const session = await getSession(ctx);
 
-	if (!session?.user.admin)
+	if (!session)
 		return {
 			redirect: {
 				destination: "/",
@@ -22,4 +22,4 @@ const serverAdminSession: GetServerSideProps<{
 	};
 };
 
-export default serverAdminSession
+export default authenticatedSession
