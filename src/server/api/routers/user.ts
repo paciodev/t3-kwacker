@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const userRouter = createTRPCRouter({
 	getById: publicProcedure
@@ -58,5 +58,46 @@ export const userRouter = createTRPCRouter({
 			}
 
 			return user
+		}),
+
+	changeUsername: protectedProcedure
+		.input(z.object({
+			newUsername: z.string()
+		}))
+		.mutation(async ({ ctx, input }) => {
+			const newUsername = input.newUsername.trim()
+
+			if (!newUsername || newUsername.length < 3) {
+				return new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Username must be at least 3 characters'
+				})
+			}
+
+			if (newUsername.length > 32) {
+				return new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Username must be at shorter than 32 characters'
+				})
+			}
+
+
+			return await ctx.prisma.user.update({
+				where: {
+					id: ctx.session.user.id
+				},
+				data: {
+					name: newUsername
+				}
+			})
+		}),
+
+	deleteSelf: protectedProcedure
+		.mutation(async ({ ctx }) => {
+			return await ctx.prisma.user.delete({
+				where: {
+					id: ctx.session.user.id
+				}
+			})
 		})
 })
