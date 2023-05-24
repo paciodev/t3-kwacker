@@ -38,6 +38,16 @@ const Navbar = () => {
                 </div>
                 <Menu.Items className="absolute right-0 z-20 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="px-1 py-2">
+                    {session.user.admin && (
+                      <Menu.Item>
+                        <Link
+                          href="/admin"
+                          className="flex w-full rounded-md px-3 py-2 text-sm font-bold text-red-600 hover:bg-green-900 hover:text-white"
+                        >
+                          Admin panel
+                        </Link>
+                      </Menu.Item>
+                    )}
                     <Menu.Item>
                       <Link
                         href={`/user/${session.user.id}`}
