@@ -10,39 +10,59 @@ import checkIsAdmin from '~/server/utils/checkIsAdmin';
 import checkIsBanned from '~/server/utils/checkIsBanned';
 
 export const postRouter = createTRPCRouter({
-	getAll: publicProcedure.query(async ({ ctx }) => {
-		return await ctx.prisma.post.findMany({
-			where: {
-				published: true,
-				author: {
-					banned: false
-				}
-			},
-			orderBy: {
-				createdAt: 'desc'
-			},
-			include: {
-				_count: {
-					select: {
-						comments: true,
-						hearts: true
+	getAll: publicProcedure
+		.input(z.object({
+			cursor: z.string().nullish(),
+			limit: z.number().min(1).max(100).default(20)
+		}))
+		.query(async ({ ctx, input }) => {
+			const { cursor, limit } = input
+
+			const posts = await ctx.prisma.post.findMany({
+				take: limit + 1,
+				cursor: cursor ? { id: cursor } : undefined,
+				where: {
+					published: true,
+					author: {
+						banned: false
 					}
 				},
-				hearts: {
-					where: {
-						authorId: ctx.session?.user.id || ''
+				orderBy: {
+					createdAt: 'desc'
+				},
+				include: {
+					_count: {
+						select: {
+							comments: true,
+							hearts: true
+						}
+					},
+					hearts: {
+						where: {
+							authorId: ctx.session?.user.id || ''
+						}
+					},
+					author: {
+						select: {
+							admin: true,
+							image: true,
+							name: true
+						}
 					}
 				},
-				author: {
-					select: {
-						admin: true,
-						image: true,
-						name: true
-					}
-				}
-			},
-		})
-	}),
+			})
+
+			let nextCursor: typeof cursor | undefined = undefined;
+			if (posts.length > limit) {
+				const nextItem = posts.pop() as typeof posts[number]
+				nextCursor = nextItem.id;
+			}
+
+			return {
+				posts,
+				nextCursor
+			}
+		}),
 
 	getById: publicProcedure
 		.input(z.object({

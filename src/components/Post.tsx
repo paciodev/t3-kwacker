@@ -10,27 +10,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Heart from "./Heart";
 import Menu from "./post/Menu";
+import { RouterOutputs } from "~/utils/api";
 
 type Props = {
-  post: PostType & {
-    comments?: (Comment & {
-      author: {
-        name: string | null;
-        image: string | null;
-        admin: boolean;
-      } | null;
-    })[];
-    author: {
-      name: string | null;
-      image: string | null;
-      admin: boolean;
-    };
-    hearts?: HeartType[];
-    _count: {
-      comments: number;
-      hearts: number;
-    };
-  };
+  post: RouterOutputs["post"]["getAll"]["posts"][number];
   redirect?: boolean;
   stopUserRedirect?: boolean;
   redirectAfterDelete?: boolean;
