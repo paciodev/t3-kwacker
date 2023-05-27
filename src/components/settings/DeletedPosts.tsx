@@ -1,10 +1,10 @@
 import { api } from "~/utils/api";
-import Loading from "../Loading";
 import { toast } from "react-hot-toast";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Menu } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import LoadingDeletedPosts from "./LoadingDeletedPosts";
 
 let toastId: string;
 
@@ -50,7 +50,7 @@ const DeletedPosts = () => {
       </h1>
 
       <div className="mt-8">
-        {isLoading && <Loading />}
+        {isLoading && <LoadingDeletedPosts />}
         {data?.length === 0 ? (
           <p className="text-center font-bold">
             You don&apos;t have any deleted post

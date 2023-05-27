@@ -1,9 +1,8 @@
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
-import Loading from "../Loading";
 import Post from "../Post";
 import { InView } from "react-intersection-observer";
-import Loader from "../post/Loader";
+import LoadingPost from "../post/LoadingPost";
 
 const KwackerPosts = () => {
   const { data, error, hasNextPage, fetchNextPage, isFetching } =
@@ -47,7 +46,7 @@ const KwackerPosts = () => {
                 as="div"
                 onChange={(inView: boolean) => void tryToFetchPosts(inView)}
               >
-                {hasNextPage && <Loader />}
+                {hasNextPage && <LoadingPost />}
               </InView>
             </>
           ) : (
@@ -57,7 +56,7 @@ const KwackerPosts = () => {
           )}
         </div>
       ) : (
-        <Loading />
+        <LoadingPost />
       )}
     </div>
   );

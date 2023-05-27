@@ -1,7 +1,7 @@
 import React from "react";
 import ContentLoader from "react-content-loader";
 
-const Loader = () => (
+const LoadingPost = () => (
   <ContentLoader
     speed={2}
     width={400}
@@ -19,4 +19,4 @@ const Loader = () => (
   </ContentLoader>
 );
 
-export default Loader;
+export default LoadingPost;
