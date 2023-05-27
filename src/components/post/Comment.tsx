@@ -4,18 +4,12 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import { api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 
 const Comment = ({
   comment: c,
 }: {
-  comment: Comment & {
-    author: {
-      name: string | null;
-      image: string | null;
-      admin: boolean;
-    } | null;
-  };
+  comment: RouterOutputs["post"]["getById"]["comments"][number];
 }) => {
   const utils = api.useContext();
   const session = useSession();

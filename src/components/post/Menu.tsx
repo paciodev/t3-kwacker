@@ -1,33 +1,14 @@
 import { Menu } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { type Comment, type Heart, type Post } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-import { api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 
 let toastId: string;
 
 type Props = {
-  post: Post & {
-    comments?: (Comment & {
-      author: {
-        name: string | null;
-        image: string | null;
-        admin: boolean;
-      } | null;
-    })[];
-    author: {
-      name: string | null;
-      image: string | null;
-      admin: boolean;
-    };
-    hearts?: Heart[];
-    _count: {
-      comments: number;
-      hearts: number;
-    };
-  };
+  post: RouterOutputs["post"]["getAll"]["posts"][number];
   redirectAfterDelete?: boolean;
 };
 

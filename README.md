@@ -6,15 +6,18 @@ Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of
 
 - Sign in/Sign out with Discord OAuth
 - Creating own posts
+- Infinity scroll on main page
 - Reading posts, and commenting on them
 - Deleting own posts and comments
 - Reporting bad posts
 - Adding hearts to posts
+- Changing your own nickname
+- Option to remove your account with data from DB
+- Checking your own deleted posts and restoring them
 - _As admin_ Deleting other posts
 - _As admin_ Banning users from app
 - _As admin_ Checking reported posts
 - _As admin_ Unbanning banned users
-- **In future** Restoring and checking deleted posts
 
 ## Screenshots
 

@@ -1,18 +1,8 @@
-import { type Report } from "@prisma/client";
 import { toast } from "react-hot-toast";
-import { api } from "~/utils/api";
+import { type RouterOutputs, api } from "~/utils/api";
 
 type Props = {
-  post: {
-    reportCount: number;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    published: boolean;
-    text: string;
-    authorId: string;
-    reports: Report[];
-  };
+  post: RouterOutputs["post"]["getMostReported"][number];
 };
 
 let toastId: string;
