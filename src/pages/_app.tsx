@@ -22,6 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Component {...pageProps} />
         <Footer />
       </div>
+      <div id="modals" />
     </SessionProvider>
   );
 };
