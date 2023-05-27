@@ -8,7 +8,7 @@ const KwackerPosts = () => {
   const { data, error, hasNextPage, fetchNextPage, isFetching } =
     api.post.getAll.useInfiniteQuery(
       {
-        limit: 2,
+        limit: 15,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
