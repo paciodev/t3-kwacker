@@ -146,5 +146,23 @@ export const adminRouter = createTRPCRouter({
 					authorId: input.userId
 				}
 			})
+		}),
+
+	deleteComment: protectedProcedure
+		.input(z.object({ commentId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			const isAdmin = await checkIsAdmin(ctx.session.user.id)
+			if (!isAdmin) {
+				throw new TRPCError({
+					code: 'UNAUTHORIZED',
+					message: "You are not allowed to delete someones comment"
+				})
+			}
+
+			return await ctx.prisma.comment.delete({
+				where: {
+					id: input.commentId
+				}
+			})
 		})
 })
