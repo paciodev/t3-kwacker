@@ -50,7 +50,15 @@ const KwackerForm = () => {
 
       let uploadedFileRes: { fileKey: string; fileUrl: string }[] = [];
       if (file) {
-        uploadedFileRes = await uploadFiles([file], "postImageUploader");
+        try {
+          uploadedFileRes = await uploadFiles([file], "postImageUploader");
+        } catch (err) {
+          toast.error(err as string, { id: toastId });
+          setTimeout(() => {
+            toastId = "!toast";
+          }, 3000);
+          return;
+        }
       }
 
       return await addPost.mutateAsync({
