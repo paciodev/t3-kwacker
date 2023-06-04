@@ -53,10 +53,12 @@ const KwackerForm = () => {
         try {
           uploadedFileRes = await uploadFiles([file], "postImageUploader");
         } catch (err) {
-          toast.error(err as string, { id: toastId });
-          setTimeout(() => {
-            toastId = "!toast";
-          }, 3000);
+          if (err instanceof Error) {
+            toast.error(err.message, { id: toastId });
+            setTimeout(() => {
+              toastId = "!toast";
+            }, 3000);
+          }
           return;
         }
       }
