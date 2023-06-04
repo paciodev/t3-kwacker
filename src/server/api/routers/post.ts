@@ -131,7 +131,7 @@ export const postRouter = createTRPCRouter({
 
 			return post
 		}),
-	add: protectedProcedure.input(z.object({ text: z.string() })).mutation(async ({ ctx, input }) => {
+	add: protectedProcedure.input(z.object({ text: z.string(), imageUrl: z.string() })).mutation(async ({ ctx, input }) => {
 		await checkIsBanned(ctx.session.user.id)
 		const text = input.text.trim()
 
@@ -150,7 +150,8 @@ export const postRouter = createTRPCRouter({
 		const post = await ctx.prisma.post.create({
 			data: {
 				text: input.text,
-				authorId: ctx.session.user.id
+				authorId: ctx.session.user.id,
+				imageUrl: input.imageUrl,
 			}
 		})
 
@@ -277,6 +278,6 @@ export const postRouter = createTRPCRouter({
 					id: postToDelete.id
 				}
 			})
-		})
+		}),
 })
 

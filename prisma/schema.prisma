@@ -13,6 +13,7 @@ model Post {
   updatedAt DateTime  @updatedAt
   published Boolean   @default(true)
   text      String
+  imageUrl  String?
   authorId  String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[]

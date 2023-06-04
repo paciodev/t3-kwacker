@@ -1,8 +1,3 @@
-import {
-  type Heart as HeartType,
-  type Comment,
-  type Post as PostType,
-} from "@prisma/client";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useSession } from "next-auth/react";
@@ -10,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Heart from "./Heart";
 import Menu from "./post/Menu";
-import { RouterOutputs } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 
 type Props = {
   post: RouterOutputs["post"]["getAll"]["posts"][number];
@@ -97,6 +92,18 @@ const Post = ({
           <div>{postedAt}</div>
         </div>
         <p className="break-all pr-5">{post.text}</p>
+        {post.imageUrl && (
+          <div className="relative h-60 w-96">
+            <a href={post.imageUrl} target="_blank" rel="norefferer noopener">
+              <Image
+                src={post.imageUrl}
+                className="object-contain"
+                fill
+                alt={`post image from ${post.author.name as string}`}
+              />
+            </a>
+          </div>
+        )}
         {redirect && (
           <>
             <div className="mt-2">
