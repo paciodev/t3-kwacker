@@ -91,17 +91,16 @@ const Post = ({
 
           <div>{postedAt}</div>
         </div>
-        <p className="break-all pr-5">{post.text}</p>
+        <p className="mb-1 break-all pr-5">{post.text}</p>
         {post.imageUrl && (
-          <div className="relative h-60 w-96">
-            <a href={post.imageUrl} target="_blank" rel="norefferer noopener">
-              <Image
-                src={post.imageUrl}
-                className="object-contain"
-                fill
-                alt={`post image from ${post.author.name as string}`}
-              />
-            </a>
+          <div className="relative h-64">
+            <Image
+              src={post.imageUrl}
+              alt=""
+              fill
+              draggable={false}
+              className="object-contain object-left"
+            />
           </div>
         )}
         {redirect && (
@@ -109,20 +108,19 @@ const Post = ({
             <div className="mt-2">
               <Link
                 href={`/post/${post.id}`}
-                className="rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
+                className="inline-block rounded-md bg-green-900 px-6 py-2 text-sm text-white transition-opacity hover:opacity-75"
               >
                 See full post
               </Link>
             </div>
-            <Link
-              href={`/post/${post.id}`}
-              className="flex flex-col items-end justify-end"
-            >
-              <p>
-                {post._count?.comments} comment
-                {post._count?.comments !== 1 && "s"}
-              </p>
-            </Link>
+            <div className="flex flex-col items-end justify-end">
+              <Link href={`/post/${post.id}`}>
+                <p>
+                  {post._count?.comments} comment
+                  {post._count?.comments !== 1 && "s"}
+                </p>
+              </Link>
+            </div>
           </>
         )}
       </div>
