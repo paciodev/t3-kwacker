@@ -8,7 +8,7 @@ export const fileRouter = {
 	postImageUploader: f({ image: { maxFileCount: 1, maxFileSize: '4MB' } })
 		.middleware(async (req, res) => {
 			const data = await getServerSession(req, res, authOptions)
-
+			console.log(data)
 			if (!data?.user) {
 				throw new Error('Unauthorized')
 			}
