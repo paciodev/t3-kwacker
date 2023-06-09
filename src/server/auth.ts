@@ -19,8 +19,8 @@ declare module "next-auth" {
 	interface Session extends DefaultSession {
 		user: {
 			id: string;
-			admin: boolean;
-			banned: boolean;
+			admin?: boolean;
+			banned?: boolean;
 		} & DefaultSession["user"];
 	}
 
