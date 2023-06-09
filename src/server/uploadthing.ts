@@ -9,7 +9,7 @@ export const fileRouter = {
 		.middleware(async (req, res) => {
 			const data = await getServerSession(req, res, authOptions)
 			console.log(data)
-			if (!data?.user) {
+			if (!data) {
 				throw new Error('Unauthorized')
 			}
 
