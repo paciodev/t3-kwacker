@@ -92,17 +92,6 @@ const Post = ({
           <div>{postedAt}</div>
         </div>
         <p className="mb-1 break-all pr-5">{post.text}</p>
-        {post.imageUrl && (
-          <div className="relative h-64">
-            <Image
-              src={post.imageUrl}
-              alt=""
-              fill
-              draggable={false}
-              className="object-contain object-left"
-            />
-          </div>
-        )}
         {redirect && (
           <>
             <div className="mt-2">

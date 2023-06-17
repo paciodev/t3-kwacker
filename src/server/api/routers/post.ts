@@ -131,7 +131,7 @@ export const postRouter = createTRPCRouter({
 
 			return post
 		}),
-	add: protectedProcedure.input(z.object({ text: z.string(), imageUrl: z.string() })).mutation(async ({ ctx, input }) => {
+	add: protectedProcedure.input(z.object({ text: z.string() })).mutation(async ({ ctx, input }) => {
 		await checkIsBanned(ctx.session.user.id)
 		const text = input.text.trim()
 
@@ -151,7 +151,6 @@ export const postRouter = createTRPCRouter({
 			data: {
 				text: input.text,
 				authorId: ctx.session.user.id,
-				imageUrl: input.imageUrl,
 			}
 		})
 
@@ -279,5 +278,15 @@ export const postRouter = createTRPCRouter({
 				}
 			})
 		}),
+
+	deletePernamentlyAllOwnPosts: protectedProcedure
+		.mutation(async ({ ctx }) => {
+			return await ctx.prisma.post.deleteMany({
+				where: {
+					authorId: ctx.session.user.id,
+					published: false
+				}
+			})
+		})
 })
 

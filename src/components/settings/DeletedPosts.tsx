@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { Menu } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import LoadingDeletedPosts from "./LoadingDeletedPosts";
+import clsx from "clsx";
 
 let toastId: string;
 
@@ -30,6 +31,17 @@ const DeletedPosts = () => {
       toast.error(err.message, { id: toastId });
     },
   });
+  const deleteAllPosts = api.post.deletePernamentlyAllOwnPosts.useMutation({
+    onSuccess: async () => {
+      await utils.post.getOwnDeleted.invalidate();
+      toast.success("Successfully deleted all your unpublished posts!", {
+        id: toastId,
+      });
+    },
+    onError: (err) => {
+      toast.error(err.message, { id: toastId });
+    },
+  });
 
   const handleRestorePost = async (id: string) => {
     toastId = toast.loading("Restoring your post...");
@@ -41,14 +53,30 @@ const DeletedPosts = () => {
     await deletePost.mutateAsync({ postId: id });
   };
 
+  const handleDeleteAll = async () => {
+    toastId = toast.loading(
+      "Deleting all your unpublished posts from database..."
+    );
+    await deleteAllPosts.mutateAsync();
+  };
+
   dayjs.extend(relativeTime);
 
   return (
     <div>
-      <h1 className="text-center text-xl font-extrabold sm:text-4xl">
-        Your deleted posts:
-      </h1>
-
+      <div className={clsx("text-center", data?.length && "space-y-2")}>
+        <h1 className="text-xl font-extrabold sm:text-4xl">
+          Your deleted posts:
+        </h1>
+        {data && data?.length > 0 && (
+          <button
+            onClick={() => void handleDeleteAll()}
+            className="rounded-lg bg-red-900 py-2 px-6 font-bold text-white transition-opacity hover:opacity-75"
+          >
+            Delete all
+          </button>
+        )}
+      </div>
       <div className="mt-8">
         {isLoading && <LoadingDeletedPosts />}
         {data?.length === 0 ? (
