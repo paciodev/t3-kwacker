@@ -59,6 +59,6 @@
     "initVersion": "7.7.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "18.x"
   }
 }
