@@ -1,4 +1,5 @@
 # t3-kwacker
+## PROJECT IS NOT SUPPORTED - DATABASE IS NOT ACTIVE (but it's stil working on local hosting)
 
 Mini social platform created with [T3 Stack](https://create.t3.gg) with a lot of features like commenting, admin panel, or for example reporting posts.
 
